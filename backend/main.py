@@ -1,18 +1,13 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-import os
-import shutil
+import os, shutil
 
 from resume_parser import extract_text_from_pdf
 from skill_extractor import extract_skills
 from recommender import calculate_skill_gap
 
-
-# ✅ STEP 1: create app FIRST
 app = FastAPI(title="AI Career Guidance API")
 
-
-# ✅ STEP 2: then add middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,12 +15,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-UPLOAD_DIR = "uploads"
+UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-SKILLS_PATH = "datasets/tech_skills_dataset.json"
-ROLES_PATH = "datasets/career_roles.csv"
+SKILLS_PATH = os.path.join(BASE_DIR, "datasets", "tech_skills_dataset.json")
+ROLES_PATH = os.path.join(BASE_DIR, "datasets", "career_roles.csv")
 
 
 @app.post("/analyze-resume")
@@ -38,9 +34,12 @@ async def analyze_resume(file: UploadFile = File(...)):
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    resume_text = extract_text_from_pdf(file_path)
-    user_skills = extract_skills(resume_text, SKILLS_PATH)
-    results = calculate_skill_gap(user_skills, ROLES_PATH)
+    try:
+        resume_text = extract_text_from_pdf(file_path)
+        user_skills = extract_skills(resume_text, SKILLS_PATH)
+        results = calculate_skill_gap(user_skills, ROLES_PATH)
+    except Exception as e:
+        return {"error": str(e)}
 
     return {
         "resume": file.filename,

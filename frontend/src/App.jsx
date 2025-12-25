@@ -2,7 +2,7 @@ import { useState } from "react";
 import ResumeUpload from "./components/ResumeUpload";
 import ResultCard from "./components/ResultCard";
 import './App.css';
-import { analyzeResume } from "./api";
+import { analyzeResume } from "../api";
 
 function App() {
   const [file, setFile] = useState(null);

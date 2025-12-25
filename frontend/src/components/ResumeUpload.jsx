@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { UploadCloud, FileText, Loader2 } from "lucide-react";
-import { analyzeResume } from "./api";
+import { analyzeResume } from "../../api";
 
 export default function ResumeUpload({ onResult }) {
   const [file, setFile] = useState(null);
@@ -8,38 +8,17 @@ export default function ResumeUpload({ onResult }) {
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
-  if (!file) return alert("Upload a PDF");
-
-  try {
-    const data = await analyzeResume(file);
-    onResult(data);
-  } catch (err) {
-    console.error(err);
-    alert("Error analyzing resume");
-  }
-};
-
-    const formData = new FormData();
-    formData.append("file", file);
+    if (!file) return alert("Upload a PDF");
 
     setLoading(true);
     setError("");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/analyze-resume", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Something went wrong");
-      }
-
+      const data = await analyzeResume(file);
       onResult(data);
     } catch (err) {
-      setError(err.message);
+      console.error(err);
+      setError(err.message || "Error analyzing resume");
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,4 @@
-const API_URL = "https://career-guidance-system-gwod.onrender.com";
+export const API_URL = "https://career-guidance-system-gwod.onrender.com";
 
 export async function analyzeResume(file) {
   const formData = new FormData();
