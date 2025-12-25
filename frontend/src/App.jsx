@@ -2,9 +2,18 @@ import { useState } from "react";
 import ResumeUpload from "./components/ResumeUpload";
 import ResultCard from "./components/ResultCard";
 import './App.css';
+import { analyzeResume } from "./api";
 
 function App() {
+  const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
+
+  const handleSubmit = async () => {
+    if (!file) return;
+
+    const data = await analyzeResume(file);
+    setResult(data);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
