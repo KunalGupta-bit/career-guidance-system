@@ -3,3 +3,5 @@ uvicorn
 pdfplumber
 python-multipart
 pandas
+sentence-transformers
+scikit-learn
