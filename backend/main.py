@@ -20,8 +20,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-SKILLS_PATH = os.path.join(BASE_DIR, "datasets", "tech_skills_dataset.json")
-ROLES_PATH = os.path.join(BASE_DIR, "datasets", "career_roles.csv")
+SKILLS_PATH = os.path.join(BASE_DIR, "datasets", "skills_dataset.json")
+ROLES_PATH = os.path.join(BASE_DIR, "datasets", "career_roles_extended.csv")
 
 
 @app.post("/analyze-resume")
