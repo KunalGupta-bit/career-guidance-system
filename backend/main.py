@@ -44,5 +44,5 @@ async def analyze_resume(file: UploadFile = File(...)):
     return {
         "resume": file.filename,
         "extracted_skills": user_skills,
-        "top_recommendations": results[:3]
+        "top_recommendations": results[:5]
     }
